@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Person List ....</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h1>Person List</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Abrir</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            <tr th:each="persona : ${listadoPersonas}">
+                <td th:text="${persona.firstName}"></td>
+                <td th:text="${persona.lastName}"></td>
+                <td><a th:href="@{/person/view/{idPersona}(idPersona=${persona.id})}">Abrir</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

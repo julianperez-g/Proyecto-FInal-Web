@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Person View</title>
+</head>
+<body>
+    <h1>Person View </h1>
+
+    <ul>
+        <li th:text="${persona.cedula}"></li>
+        <li th:text="${persona.firstName}"></li>
+        <li th:text="${persona.lastName}"></li>
+    </ul>
+</body>
+</html>
