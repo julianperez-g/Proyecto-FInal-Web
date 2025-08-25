@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle Modelo de Barco</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+  <h1>Detalle del Modelo</h1>
+
+ 
+  <p><b>ID:</b> <span th:text="${modeloBarco.idModelo}"></span></p>
+  <p><b>Nombre:</b> <span th:text="${modeloBarco.nombre}"></span></p>
+  <p><b>Color:</b> <span th:text="${modeloBarco.color}"></span></p>
+  <p><b>Capacidad:</b> <span th:text="${modeloBarco.capacidad}"></span></p>
+
+  <p><a th:href="@{/modelobarco/list}">Volver a la lista</a></p>
+</body>
+</html>
