@@ -7,34 +7,48 @@ import co.edu.javeriana.ejemplojpa.dto.BarcoDTO;
 import co.edu.javeriana.ejemplojpa.model.Barco;
 
 public class BarcoMapper {
+
+    // Entity -> DTO
     public static BarcoDTO toDTO(Barco barco) {
         if (barco == null) return null;
-        BarcoDTO barcodto = new BarcoDTO();
-       barcodto.setIdBarco(barco.getIdBarco());
-        barcodto.setVelX(barco.getVelX());
-        barcodto.setVelY(barco.getVelY());
-        barcodto.setPosX(barco.getPosX());
-        barcodto.setPosY(barco.getPosY());
-        barcodto.setJugadorId(barco.getJugador() != null ? barco.getJugador().getIdJugador() : null);
-        barcodto.setModeloId(barco.getModelo() != null ? barco.getModelo().getIdModelo() : null);
-        return barcodto;
+
+        BarcoDTO dto = new BarcoDTO();
+        dto.setIdBarco(barco.getIdBarco());
+        dto.setVelX(barco.getVelX());
+        dto.setVelY(barco.getVelY());
+        dto.setPosX(barco.getPosX());
+        dto.setPosY(barco.getPosY());
+
+        if (barco.getJugador() != null) {
+            dto.setJugadorId(barco.getJugador().getIdJugador());
+            dto.setJugadorNombre(barco.getJugador().getNombre()); // <- aquí
+        }
+        if (barco.getModelo() != null) {
+            dto.setModeloId(barco.getModelo().getIdModelo());
+            dto.setModeloNombre(barco.getModelo().getNombre());   // <- aquí
+        }
+        return dto;
     }
-    public static Barco toEntity(BarcoDTO barcodto) {
-        if (barcodto == null) return null;
+
+    // DTO -> Entity
+    public static Barco toEntity(BarcoDTO dto) {
+        if (dto == null) return null;
         Barco barco = new Barco();
-        barco.setIdBarco(barcodto.getIdBarco());
-        barco.setVelX(barcodto.getVelX());
-        barco.setVelY(barcodto.getVelY());
-        barco.setPosX(barcodto.getPosX());
-        barco.setPosY(barcodto.getPosY());
+        barco.setIdBarco(dto.getIdBarco());
+        barco.setVelX(dto.getVelX());
+        barco.setVelY(dto.getVelY());
+        barco.setPosX(dto.getPosX());
+        barco.setPosY(dto.getPosY());
+        // ⚠ OJO: no asignamos jugador ni modelo aquí,
+        // porque se resuelven en el Service con los repositorios
         return barco;
     }
-   
+
     public static List<BarcoDTO> toDTOList(List<Barco> entities) {
         List<BarcoDTO> dtos = new ArrayList<>();
         if (entities == null) return dtos;
-        for (Barco jugador : entities) {
-            dtos.add(toDTO(jugador));
+        for (Barco entity : entities) {
+            dtos.add(toDTO(entity));
         }
         return dtos;
     }

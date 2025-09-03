@@ -55,23 +55,46 @@ public class DbInitializer implements CommandLineRunner {
             }
         }
 
-        // Crear jugadores
-        for (int i = 1; i <= 5; i++) {
-            Jugador jugador = new Jugador();
-            jugador.setNombre("Jugador " + i);
-            jugador.setUsuario("user" + i);
-            jugador.setContrasena("pass" + i);
-            jugador.setRol("Jugador");
-            jugadorRepo.save(jugador);
-        }
+    
+String[][] JUGADORES = {
+    {"Julián Pérez", "jperez", "1234", "Jugador"},
+    {"María Gómez", "mariag", "1234", "Jugador"},
+    {"Andrés Torres", "andrest", "1234", "Jugador"},
+    {"Luisa Fernández", "luisaf", "1234", "Jugador"},
+    {"Jorge Martínez", "jorgem", "1234", "Jugador"}
+};
 
-        // Crear modelos de barco
-        for (int i = 1; i <= 10; i++) {
-            ModeloBarco modelo = new ModeloBarco();
-            modelo.setNombre("Modelo " + i);
-            modelo.setColor("Color" + i);
-            modeloRepo.save(modelo);
-        }
+for (String[] datos : JUGADORES) {
+    Jugador jugador = new Jugador();
+    jugador.setNombre(datos[0]);       // nombre realista
+    jugador.setUsuario(datos[1]);      // usuario corto
+    jugador.setContrasena(datos[2]);   // contraseña simple
+    jugador.setRol(datos[3]);          // rol
+    jugadorRepo.save(jugador);
+}
+
+
+        // Crear modelos de barco con nombre y color (nombre + HEX)
+String[][] MODELOS = {
+    {"Fragata", "Rojo Ferrari (#FF2800)"},
+    {"Destructor", "Azul Marino (#003366)"},
+    {"Corbeta", "Verde Esmeralda (#2ECC71)"},
+    {"Lancha Rápida", "Amarillo Sol (#F1C40F)"},
+    {"Acorazado", "Naranja Vela (#E67E22)"},
+    {"Portaaviones", "Gris Acero (#7F8C8D)"},
+    {"Submarino", "Negro Onix (#111111)"},
+    {"Carguero", "Blanco Perla (#FDFEFE)"},
+    {"Patrullero", "Cian Caribe (#17A2B8)"},
+    {"Catamarán", "Morado Real (#6F42C1)"}
+};
+
+for (String[] datos : MODELOS) {
+    ModeloBarco modelo = new ModeloBarco();
+    modelo.setNombre(datos[0]);   // nombre del modelo
+    modelo.setColor(datos[1]);    // color con su HEX
+    modeloRepo.save(modelo);
+}
+
 
         // Crear barcos
         Random rnd = new Random();

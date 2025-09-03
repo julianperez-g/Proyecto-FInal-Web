@@ -1,6 +1,5 @@
 package co.edu.javeriana.ejemplojpa.mapper;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,28 +8,31 @@ import co.edu.javeriana.ejemplojpa.model.Jugador;
 
 public class JugadorMapper {
 
+    // ======= Entity -> DTO =======
     public static JugadorDTO toDTO(Jugador jugador) {
         if (jugador == null) return null;
-        JugadorDTO jugadordto = new JugadorDTO();
-        jugadordto.setIdJugador(jugador.getIdJugador());
-        jugadordto.setNombre(jugador.getNombre());
-        jugadordto.setUsuario(jugador.getUsuario());
-        jugadordto.setContrasena(jugador.getContrasena());  
-        jugadordto.setRol(jugador.getRol());
-        return jugadordto;
+        JugadorDTO dto = new JugadorDTO();
+        dto.setIdJugador(jugador.getIdJugador());
+        dto.setNombre(jugador.getNombre());
+        dto.setUsuario(jugador.getUsuario());
+        dto.setContrasena(jugador.getContrasena());
+        dto.setRol(jugador.getRol());
+        return dto;
     }
 
-    public static Jugador toEntity(JugadorDTO jugadordto) {
-        if (jugadordto == null) return null;
+    // ======= DTO -> Entity =======
+    public static Jugador toEntity(JugadorDTO dto) {
+        if (dto == null) return null;
         Jugador jugador = new Jugador();
-        jugador.setIdJugador(jugadordto.getIdJugador());
-        jugador.setNombre(jugadordto.getNombre());
-        jugador.setUsuario(jugadordto.getUsuario());
-        jugador.setContrasena(jugadordto.getContrasena());
-        jugador.setRol(jugadordto.getRol());
+        jugador.setIdJugador(dto.getIdJugador());
+        jugador.setNombre(dto.getNombre());
+        jugador.setUsuario(dto.getUsuario());
+        jugador.setContrasena(dto.getContrasena());
+        jugador.setRol(dto.getRol());
         return jugador;
     }
 
+    // ======= Listas =======
     public static List<JugadorDTO> toDTOList(List<Jugador> entities) {
         List<JugadorDTO> dtos = new ArrayList<>();
         if (entities == null) return dtos;
@@ -48,5 +50,13 @@ public class JugadorMapper {
         }
         return entities;
     }
-}
 
+    // ======= UPDATE (encapsulado) =======
+    public static void updateEntityFromDTO(JugadorDTO dto, Jugador entity) {
+        if (dto == null || entity == null) return;
+        entity.setNombre(dto.getNombre());
+        entity.setUsuario(dto.getUsuario());
+        entity.setContrasena(dto.getContrasena());
+        entity.setRol(dto.getRol());
+    }
+}

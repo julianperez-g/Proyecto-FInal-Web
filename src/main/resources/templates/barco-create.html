@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Barco</title>
+</head>
+<body>
+<h1>Crear nuevo Barco</h1>
+
+<form th:action="@{/barco/create}" th:object="${barco}" method="post">
+  <label>Posición X:</label>
+  <input type="number" th:field="*{posX}" required><br>
+
+  <label>Posición Y:</label>
+  <input type="number" th:field="*{posY}" required><br>
+
+  <label>Velocidad X:</label>
+  <input type="number" th:field="*{velX}" required><br>
+
+  <label>Velocidad Y:</label>
+  <input type="number" th:field="*{velY}" required><br>
+
+  <label>Jugador:</label>
+  <select th:field="*{jugadorId}" required>
+    <option value="">-- Seleccione un jugador --</option>
+    <option th:each="j : ${jugadores}" th:value="${j.idJugador}" th:text="${j.nombre}"></option>
+  </select><br>
+
+  <label>Modelo:</label>
+  <select th:field="*{modeloId}" required>
+    <option value="">-- Seleccione un modelo --</option>
+    <option th:each="m : ${modelos}" th:value="${m.idModelo}" th:text="${m.nombre}"></option>
+  </select><br>
+
+  <button type="submit">Guardar</button>
+</form>
+
+<a th:href="@{/barco/list}">Cancelar</a>
+</body>
+</html>

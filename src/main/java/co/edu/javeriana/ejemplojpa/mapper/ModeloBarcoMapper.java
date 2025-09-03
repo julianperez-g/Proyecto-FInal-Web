@@ -1,6 +1,5 @@
 package co.edu.javeriana.ejemplojpa.mapper;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,35 +8,45 @@ import co.edu.javeriana.ejemplojpa.model.ModeloBarco;
 
 public class ModeloBarcoMapper {
 
- 
-    public static ModeloBarcoDTO toDTO(ModeloBarco modelo) {
-        if (modelo == null) return null;
-        ModeloBarcoDTO modelodto = new ModeloBarcoDTO();
-        modelodto.setIdModelo(modelo.getIdModelo());
-        modelodto.setNombre(modelo.getNombre());
-        modelodto.setColor(modelo.getColor());
-        return modelodto;
+    // -------------------------
+    // Entity -> DTO
+    // -------------------------
+    public static ModeloBarcoDTO toDTO(ModeloBarco entity) {
+        if (entity == null) return null;
+        ModeloBarcoDTO dto = new ModeloBarcoDTO();
+        dto.setIdModelo(entity.getIdModelo());
+        dto.setNombre(entity.getNombre());
+        dto.setColor(entity.getColor());
+        return dto;
     }
 
-    public static ModeloBarco toEntity(ModeloBarcoDTO modelodto) {
-        if (modelodto == null) return null;
-        ModeloBarco modelo = new ModeloBarco();
-        modelo.setIdModelo(modelodto.getIdModelo());
-        modelo.setNombre(modelodto.getNombre());
-        modelo.setColor(modelodto.getColor());
-        return modelo;
+    // -------------------------
+    // DTO -> Entity
+    // -------------------------
+    public static ModeloBarco toEntity(ModeloBarcoDTO dto) {
+        if (dto == null) return null;
+        ModeloBarco entity = new ModeloBarco();
+        entity.setIdModelo(dto.getIdModelo());
+        entity.setNombre(dto.getNombre());
+        entity.setColor(dto.getColor());
+        return entity;
     }
 
-   
+    // -------------------------
+    // List<Entity> -> List<DTO>
+    // -------------------------
     public static List<ModeloBarcoDTO> toDTOList(List<ModeloBarco> entities) {
         List<ModeloBarcoDTO> dtos = new ArrayList<>();
         if (entities == null) return dtos;
-        for (ModeloBarco modelo : entities) {
-            dtos.add(toDTO(modelo));
+        for (ModeloBarco entity : entities) {
+            dtos.add(toDTO(entity));
         }
         return dtos;
     }
 
+    // -------------------------
+    // List<DTO> -> List<Entity>
+    // -------------------------
     public static List<ModeloBarco> toEntityList(List<ModeloBarcoDTO> dtos) {
         List<ModeloBarco> entities = new ArrayList<>();
         if (dtos == null) return entities;

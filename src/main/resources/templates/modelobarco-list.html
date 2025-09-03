@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Modelos de Barco</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
-</head>
+<head><meta charset="UTF-8"><title>Modelos de Barco</title></head>
 <body>
-  <h1>Modelos de Barco</h1>
+<h1>Modelos de Barco</h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Color</th>
-        <th>Capacidad</th>
-        <th>Abrir</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr th:each="m : ${listadoModelos}">
-        <td th:text="${m.idModelo}"></td>
-        <td th:text="${m.nombre}"></td>
-        <td th:text="${m.color}"></td>
-        <td th:text="${m.capacidad}"></td>
-        <td>
-         
-          <a th:href="@{/modelobarco/view/{id}(id=${m.idModelo})}">Abrir</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div th:if="${ok}" style="color: green; margin-bottom: 10px;">
+  <span th:text="${ok}"></span>
+</div>
 
-  <p><a th:href="@{/}">Inicio</a></p>
+<p>
+  <a th:href="@{/modelobarco/new}">Crear nuevo modelo</a> |
+  <a th:href="@{/barco/list}">Volver a Barcos</a>
+</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>ID</th><th>Nombre</th><th>Color</th><th>Acciones</th></tr>
+  </thead>
+  <tbody>
+    <tr th:each="m : ${listadoModelos}">
+      <td th:text="${m.idModelo}">1</td>
+      <td th:text="${m.nombre}">Nombre</td>
+      <td th:text="${m.color}">Color</td>
+      <td>
+        <a th:href="@{/modelobarco/view/{id}(id=${m.idModelo})}">Ver</a> |
+        <a th:href="@{/modelobarco/edit/{id}(id=${m.idModelo})}">Editar</a> |
+        <form th:action="@{/modelobarco/delete/{id}(id=${m.idModelo})}" method="post" style="display:inline;">
+          <button type="submit" onclick="return confirm('¿Eliminar este modelo?')">Eliminar</button>
+        </form>
+      </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(listadoModelos)}">
+      <td colspan="4" style="text-align:center;">No hay modelos</td>
+    </tr>
+  </tbody>
+</table>
 </body>
 </html>

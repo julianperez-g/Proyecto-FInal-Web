@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Asignar barcos</title>
+  <script>
+    // Limite a 10 checkboxes
+    function checkLimit(source) {
+      const max = 10;
+      const boxes = document.querySelectorAll('input[name="modeloIds"]:checked');
+      if (boxes.length > max) {
+        alert("Máximo " + max + " modelos por jugador");
+        source.checked = false;
+      }
+    }
+  </script>
+</head>
+<body>
+<h1 th:text="'Asignar barcos a: ' + ${jugador.nombre}">Asignar barcos</h1>
+
+<!-- Mensaje flash -->
+<div th:if="${ok}" style="color: green; margin-bottom: 10px;">
+  <span th:text="${ok}"></span>
+</div>
+
+<h3>Selecciona hasta 10 modelos</h3>
+<form th:action="@{'/barco/por-jugador/' + ${jugador.idJugador} + '/guardar'}" method="post">
+  <div th:each="m : ${modelos}">
+    <label>
+      <input type="checkbox" name="modeloIds" th:value="${m.idModelo}" onclick="checkLimit(this)">
+      <span th:text="${m.nombre}">Modelo</span>
+    </label>
+  </div>
+  <br>
+  <button type="submit">Guardar</button>
+</form>
+
+<h3>Barcos actuales del jugador</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead><tr><th>ID</th><th>Modelo</th></tr></thead>
+  <tbody>
+    <tr th:each="b : ${barcosActuales}">
+      <td th:text="${b.idBarco}">1</td>
+      <td th:text="${b.modeloNombre}">Modelo</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(barcosActuales)}">
+      <td colspan="2" style="text-align:center;">Sin barcos asignados</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <a th:href="@{/barco/por-jugador}">Volver a jugadores</a> |
+  <a th:href="@{/barco/list}">Volver a barcos</a>
+</p>
+</body>
+</html>

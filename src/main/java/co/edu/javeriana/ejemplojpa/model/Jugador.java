@@ -3,6 +3,7 @@ package co.edu.javeriana.ejemplojpa.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,10 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Jugador {
 
+    
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idJugador;
@@ -22,6 +27,11 @@ public class Jugador {
     private String usuario;
     private String contrasena;
     private String rol;
+
+    @OneToMany(mappedBy = "jugador",
+           cascade = CascadeType.REMOVE,  
+           orphanRemoval = true)
+private List<Barco> barcos = new ArrayList<>();
 
      
     public Integer getIdJugador() {

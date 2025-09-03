@@ -1,22 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Barcos</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Barcos</title>
+</head>
 <body>
 <h1>Barcos</h1>
-<table>
+
+<!-- Mensaje flash -->
+<div th:if="${ok}" style="color: green; margin-bottom: 10px;">
+  <span th:text="${ok}"></span>
+</div>
+
+<p>
+    <a th:href="@{/barco/new}">Crear nuevo barco</a> |
+  <a th:href="@{/barco/por-jugador}">Barcos por jugador</a> |
+  <a th:href="@{/modelobarco/list}">Modelos de barco</a>
+</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
   <thead>
-    <tr><th>id</th><th>posX</th><th>posY</th><th>velX</th><th>velY</th><th>Abrir</th></tr>
+  <tr>
+    <th>ID_Barco</th>
+    <th>Jugador</th>
+    <th>Modelo</th>
+    <th>Acciones</th>
+  </tr>
   </thead>
   <tbody>
-    <tr th:each="b : ${listadoBarcos}">
-      <td th:text="${b.idBarco}"></td>
-      <td th:text="${b.posX}"></td>
-      <td th:text="${b.posY}"></td>
-      <td th:text="${b.velX}"></td>
-      <td th:text="${b.velY}"></td>
-      <td><a th:href="@{/barco/view/{id}(id=${b.idBarco})}">Abrir</a></td>
-    </tr>
+  <tr th:each="b : ${listadoBarcos}">
+    <td th:text="${b.idBarco}">1</td>
+    <td th:text="${b.jugadorNombre}">Jugador</td>
+    <td th:text="${b.modeloNombre}">Modelo</td>
+    <td>
+      <a th:href="@{/barco/view/{id}(id=${b.idBarco})}">Ver</a>
+      &nbsp;|&nbsp;
+      <a th:href="@{/barco/edit/{id}(id=${b.idBarco})}">Editar</a>
+      &nbsp;|&nbsp;
+      <form th:action="@{/barco/delete/{id}(id=${b.idBarco})}" method="post" style="display:inline;">
+        <button type="submit" onclick="return confirm('¿Eliminar este barco?')">Eliminar</button>
+      </form>
+    </td>
+  </tr>
+  <tr th:if="${#lists.isEmpty(listadoBarcos)}">
+    <td colspan="4" style="text-align:center;">No hay barcos registrados</td>
+  </tr>
   </tbody>
 </table>
+
+ 
 </body>
 </html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Barcos por jugador</title></head>
+<body>
+<h1>Barcos por jugador</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>ID</th><th>Nombre</th><th>Acción</th></tr>
+  </thead>
+  <tbody>
+    <tr th:each="j : ${jugadores}">
+      <td th:text="${j.idJugador}">1</td>
+      <td th:text="${j.nombre}">Nombre</td>
+      <td><a th:href="@{/barco/por-jugador/{id}(id=${j.idJugador})}">Ver barcos</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a th:href="@{/barco/list}">Volver a barcos</a></p>
+</body>
+</html>

@@ -1,10 +1,10 @@
 package co.edu.javeriana.ejemplojpa.services;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.javeriana.ejemplojpa.dto.ModeloBarcoDTO;
 import co.edu.javeriana.ejemplojpa.mapper.ModeloBarcoMapper;
@@ -17,14 +17,39 @@ public class ModeloBarcoService {
     @Autowired
     private ModeloBarcoRepository modeloBarcoRepository;
 
-    // Lista todos los modelos (para /modelobarco/list)
+    // LISTAR
     public List<ModeloBarcoDTO> listar() {
         return ModeloBarcoMapper.toDTOList(modeloBarcoRepository.findAll());
     }
 
-    // Recupera un modelo por id (para /modelobarco/view/{idModelo})
+    // RECUPERAR
     public ModeloBarcoDTO recuperar(int idModelo) {
         ModeloBarco modelo = modeloBarcoRepository.findById(idModelo).orElseThrow();
         return ModeloBarcoMapper.toDTO(modelo);
+    }
+
+    // CREAR
+    @Transactional
+    public ModeloBarcoDTO crear(ModeloBarcoDTO dto) {
+        ModeloBarco m = ModeloBarcoMapper.toEntity(dto);
+        m.setIdModelo(null); // por si llega algo
+        m = modeloBarcoRepository.save(m);
+        return ModeloBarcoMapper.toDTO(m);
+    }
+
+    // ACTUALIZAR
+    @Transactional
+    public ModeloBarcoDTO actualizar(Integer idModelo, ModeloBarcoDTO dto) {
+        ModeloBarco m = modeloBarcoRepository.findById(idModelo).orElseThrow();
+        m.setNombre(dto.getNombre());
+        m.setColor(dto.getColor());
+        m = modeloBarcoRepository.save(m);
+        return ModeloBarcoMapper.toDTO(m);
+    }
+
+    // ELIMINAR
+    @Transactional
+    public void eliminar(Integer idModelo) {
+        modeloBarcoRepository.deleteById(idModelo);
     }
 }

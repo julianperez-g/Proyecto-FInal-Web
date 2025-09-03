@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Jugador</title>
+</head>
+<body>
+<h1>Crear Jugador</h1>
+
+<form th:action="@{/jugador/save}" th:object="${jugador}" method="post">
+
+  <div>
+    <label>Nombre</label>
+    <input type="text" th:field="*{nombre}" required>
+  </div>
+  <div>
+    <label>Usuario</label>
+    <input type="text" th:field="*{usuario}" required>
+  </div>
+  <div>
+    <label>Contraseña</label>
+    <input type="text" th:field="*{contrasena}" required>
+  </div>
+  <div>
+    <label>Rol</label>
+    <input type="text" th:field="*{rol}" required>
+  </div>
+
+  <button type="submit">Guardar</button>
+  <a th:href="@{/jugador/list}">Cancelar</a>
+</form>
+</body>
+</html>

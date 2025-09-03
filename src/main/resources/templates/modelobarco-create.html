@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Crear Modelo</title></head>
+<body>
+<h1>Crear Modelo de Barco</h1>
+
+<form th:action="@{/modelobarco/create}" th:object="${modelo}" method="post">
+  <label>Nombre:</label>
+  <input type="text" th:field="*{nombre}" required><br>
+
+  <label>Color:</label>
+  <input type="text" th:field="*{color}" required><br>
+
+  <button type="submit">Guardar</button>
+</form>
+
+<a th:href="@{/modelobarco/list}">Cancelar</a>
+</body>
+</html>
