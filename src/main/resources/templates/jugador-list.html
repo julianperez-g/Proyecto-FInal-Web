@@ -6,6 +6,7 @@
   <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+  <div th:insert="fragments/nav :: nav"></div>
 <h1>Listado de Jugadores</h1>
 
 <!-- Mensaje flash -->
@@ -13,10 +14,10 @@
   <p th:text="${ok}"></p>
 </div>
 
-<!-- Crear: usa /jugador/create (o cambia tu controller a /jugador/new) -->
+<!-- Crear: usa /jugador/create  -->
 <a th:href="@{/jugador/create}">Crear nuevo jugador</a>
 
-<table>
+<table border="1" cellpadding="6" cellspacing="0">
   <thead>
   <tr>
     <th>Nombre</th>

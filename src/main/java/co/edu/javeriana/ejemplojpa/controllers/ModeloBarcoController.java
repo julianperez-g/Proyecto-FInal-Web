@@ -47,8 +47,8 @@ public class ModeloBarcoController {
    @GetMapping("/new")
 public ModelAndView nuevo() {
     System.out.println(">>> GET /modelobarco/new"); 
-    ModelAndView mv = new ModelAndView("modelobarco-create"); // coincide con el .html
-    mv.addObject("modelo", new ModeloBarcoDTO());            // coincide con th:object="${modelo}"
+    ModelAndView mv = new ModelAndView("modelobarco-create"); 
+    mv.addObject("modelo", new ModeloBarcoDTO());           
     return mv;
 }
 

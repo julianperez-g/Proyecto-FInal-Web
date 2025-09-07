@@ -21,11 +21,11 @@ public class BarcoMapper {
 
         if (barco.getJugador() != null) {
             dto.setJugadorId(barco.getJugador().getIdJugador());
-            dto.setJugadorNombre(barco.getJugador().getNombre()); // <- aquí
+            dto.setJugadorNombre(barco.getJugador().getNombre()); 
         }
         if (barco.getModelo() != null) {
             dto.setModeloId(barco.getModelo().getIdModelo());
-            dto.setModeloNombre(barco.getModelo().getNombre());   // <- aquí
+            dto.setModeloNombre(barco.getModelo().getNombre());   
         }
         return dto;
     }
@@ -39,8 +39,7 @@ public class BarcoMapper {
         barco.setVelY(dto.getVelY());
         barco.setPosX(dto.getPosX());
         barco.setPosY(dto.getPosY());
-        // ⚠ OJO: no asignamos jugador ni modelo aquí,
-        // porque se resuelven en el Service con los repositorios
+    
         return barco;
     }
 

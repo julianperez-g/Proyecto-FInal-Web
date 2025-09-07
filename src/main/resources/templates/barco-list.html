@@ -5,6 +5,7 @@
   <title>Barcos</title>
 </head>
 <body>
+  <div th:insert="fragments/nav :: nav"></div>
 <h1>Barcos</h1>
 
 <!-- Mensaje flash -->
@@ -14,8 +15,8 @@
 
 <p>
     <a th:href="@{/barco/new}">Crear nuevo barco</a> |
-  <a th:href="@{/barco/por-jugador}">Barcos por jugador</a> |
-  <a th:href="@{/modelobarco/list}">Modelos de barco</a>
+  <a th:href="@{/barco/por-jugador}">Barcos por jugador</a> 
+
 </p>
 
 <table border="1" cellpadding="6" cellspacing="0">

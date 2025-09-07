@@ -15,7 +15,7 @@
 
         private final JugadorRepository jugadorRepository;
 
-        // Inyección por constructor (recomendada)
+        
         public JugadorService(JugadorRepository jugadorRepository) {
             this.jugadorRepository = jugadorRepository;
         }

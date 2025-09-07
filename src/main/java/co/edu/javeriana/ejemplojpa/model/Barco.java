@@ -20,7 +20,7 @@ public class Barco {
     private int posX;
     private int posY;
 
-    // Si tu tabla BARCO tiene la FK como ID_JUGADOR, fija el nombre exacto:
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_JUGADOR", nullable = false)
     private Jugador jugador;
