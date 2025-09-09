@@ -8,7 +8,10 @@ import co.edu.javeriana.ejemplojpa.model.Jugador;
 
 public class JugadorMapper {
 
-    // ======= Entity -> DTO =======
+    
+    // -------------------------
+    // Entity -> DTO
+    // -------------------------
     public static JugadorDTO toDTO(Jugador jugador) {
         if (jugador == null) return null;
         JugadorDTO dto = new JugadorDTO();
@@ -20,7 +23,10 @@ public class JugadorMapper {
         return dto;
     }
 
-    // ======= DTO -> Entity =======
+    
+    // -------------------------
+    // DTO -> Entity
+    // -------------------------
     public static Jugador toEntity(JugadorDTO dto) {
         if (dto == null) return null;
         Jugador jugador = new Jugador();

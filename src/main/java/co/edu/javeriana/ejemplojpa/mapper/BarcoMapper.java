@@ -8,7 +8,10 @@ import co.edu.javeriana.ejemplojpa.model.Barco;
 
 public class BarcoMapper {
 
+    
+    // -------------------------
     // Entity -> DTO
+    // -------------------------
     public static BarcoDTO toDTO(Barco barco) {
         if (barco == null) return null;
 
@@ -30,7 +33,10 @@ public class BarcoMapper {
         return dto;
     }
 
+   
+    // -------------------------
     // DTO -> Entity
+    // -------------------------
     public static Barco toEntity(BarcoDTO dto) {
         if (dto == null) return null;
         Barco barco = new Barco();

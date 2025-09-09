@@ -24,7 +24,10 @@ public class ModeloBarcoController {
     @Autowired
     private ModeloBarcoService modeloBarcoService;
 
+    // ---------------------------------------------------------
     // LISTAR
+    // http://localhost:8080/modelobarco/list
+    // ---------------------------------------------------------
     @GetMapping("/list")
     public ModelAndView listar() {
         log.info("GET /modelobarco/list");
@@ -34,7 +37,10 @@ public class ModeloBarcoController {
         return mv;
     }
 
-    // VER
+   // ---------------------------------------------------------
+    // VER DETALLE
+    // http://localhost:8080/modelobarco/view/1
+    // ---------------------------------------------------------
     @GetMapping("/view/{idModelo}")
     public ModelAndView ver(@PathVariable Integer idModelo) {
         log.info("GET /modelobarco/view/{}", idModelo);
@@ -43,7 +49,10 @@ public class ModeloBarcoController {
         return mv;
     }
 
-    // CREAR (formulario)
+    // ---------------------------------------------------------
+    // CREAR (FORMULARIO)
+    // http://localhost:8080/modelobarco/new
+    // ---------------------------------------------------------
    @GetMapping("/new")
 public ModelAndView nuevo() {
     System.out.println(">>> GET /modelobarco/new"); 
@@ -53,7 +62,10 @@ public ModelAndView nuevo() {
 }
 
 
-    // CREAR (acción)
+    // ---------------------------------------------------------
+    // CREAR (ACCION)
+    // POST a /modelobarco/create
+    // ---------------------------------------------------------//
     @PostMapping("/create")
     public RedirectView crear(@ModelAttribute("modelo") ModeloBarcoDTO dto, RedirectAttributes ra) {
         log.info("POST /modelobarco/create dto={}", dto);
@@ -62,7 +74,10 @@ public ModelAndView nuevo() {
         return new RedirectView("/modelobarco/view/" + creado.getIdModelo());
     }
 
-    // EDITAR (form)
+     // ---------------------------------------------------------
+    // EDITAR (FORMULARIO)
+    // http://localhost:8080/modelobarco/edit/1
+    // ---------------------------------------------------------
     @GetMapping("/edit/{idModelo}")
     public ModelAndView editar(@PathVariable Integer idModelo) {
         log.info("GET /modelobarco/edit/{}", idModelo);
@@ -71,7 +86,10 @@ public ModelAndView nuevo() {
         return mv;
     }
 
-    // ACTUALIZAR (acción)
+    // ---------------------------------------------------------
+    // ACTUALIZAR (ACCION)
+    // POST a /modelobarco/update/1
+    // ---------------------------------------------------------
     @PostMapping("/update/{idModelo}")
     public RedirectView actualizar(@PathVariable Integer idModelo,
                                    @ModelAttribute("modelo") ModeloBarcoDTO dto,
@@ -82,7 +100,10 @@ public ModelAndView nuevo() {
         return new RedirectView("/modelobarco/view/" + idModelo);
     }
 
+    // ---------------------------------------------------------
     // ELIMINAR
+    // POST a /barco/delete/1
+    // --------------------------------------------------------- //
     @PostMapping("/delete/{idModelo}")
     public RedirectView eliminar(@PathVariable Integer idModelo, RedirectAttributes ra) {
         log.info("POST /modelobarco/delete/{}", idModelo);
