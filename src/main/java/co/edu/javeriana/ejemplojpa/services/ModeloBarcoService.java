@@ -30,8 +30,8 @@ public class ModeloBarcoService {
 
     // CREAR
     @Transactional
-    public ModeloBarcoDTO crear(ModeloBarcoDTO dto) {
-        ModeloBarco m = ModeloBarcoMapper.toEntity(dto);
+    public ModeloBarcoDTO crearModelo(ModeloBarcoDTO modeloBarcoDTO) {
+        ModeloBarco m = ModeloBarcoMapper.toEntity(modeloBarcoDTO);
         m.setIdModelo(null); // por si llega algo
         m = modeloBarcoRepository.save(m);
         return ModeloBarcoMapper.toDTO(m);
@@ -39,10 +39,10 @@ public class ModeloBarcoService {
 
     // ACTUALIZAR
     @Transactional
-    public ModeloBarcoDTO actualizar(Integer idModelo, ModeloBarcoDTO dto) {
+    public ModeloBarcoDTO actualizarModelo(Integer idModelo, ModeloBarcoDTO modeloBarcoDTO) {
         ModeloBarco m = modeloBarcoRepository.findById(idModelo).orElseThrow();
-        m.setNombre(dto.getNombre());
-        m.setColor(dto.getColor());
+        m.setNombre(modeloBarcoDTO.getNombre());
+        m.setColor(modeloBarcoDTO.getColor());
         m = modeloBarcoRepository.save(m);
         return ModeloBarcoMapper.toDTO(m);
     }

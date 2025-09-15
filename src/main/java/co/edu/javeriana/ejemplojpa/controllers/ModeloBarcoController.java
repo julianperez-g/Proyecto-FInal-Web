@@ -4,19 +4,30 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
+import co.edu.javeriana.ejemplojpa.dto.JugadorDTO;
 import co.edu.javeriana.ejemplojpa.dto.ModeloBarcoDTO;
 import co.edu.javeriana.ejemplojpa.services.ModeloBarcoService;
 
-@Controller
-@RequestMapping("/modelobarco")
+@RestController
+@RequestMapping("/modelos")
 public class ModeloBarcoController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -24,92 +35,37 @@ public class ModeloBarcoController {
     @Autowired
     private ModeloBarcoService modeloBarcoService;
 
-    // ---------------------------------------------------------
-    // LISTAR
-    // http://localhost:8080/modelobarco/list
-    // ---------------------------------------------------------
+   // GET /modelos/list  -> lista de jugadores
     @GetMapping("/list")
-    public ModelAndView listar() {
+     public ResponseEntity<List<ModeloBarcoDTO>> listar() {
         log.info("GET /modelobarco/list");
-        ModelAndView mv = new ModelAndView("modelobarco-list");
         List<ModeloBarcoDTO> modelos = modeloBarcoService.listar();
-        mv.addObject("listadoModelos", modelos);
-        return mv;
+        return ResponseEntity.status(HttpStatus.OK).body(modelos);
     }
 
-   // ---------------------------------------------------------
-    // VER DETALLE
-    // http://localhost:8080/modelobarco/view/1
-    // ---------------------------------------------------------
-    @GetMapping("/view/{idModelo}")
-    public ModelAndView ver(@PathVariable Integer idModelo) {
-        log.info("GET /modelobarco/view/{}", idModelo);
-        ModelAndView mv = new ModelAndView("modelobarco-view");
-        mv.addObject("modelo", modeloBarcoService.recuperar(idModelo));
-        return mv;
+    // GET /modelos/{idJugador}  -> detalle por id
+    @GetMapping("{idModelo}")
+    public ModeloBarcoDTO recuperar(@PathVariable Integer idModelo) {
+        log.info("GET /{idModelo}", idModelo);
+        return modeloBarcoService.recuperar(idModelo);
     }
 
-    // ---------------------------------------------------------
-    // CREAR (FORMULARIO)
-    // http://localhost:8080/modelobarco/new
-    // ---------------------------------------------------------
-   @GetMapping("/new")
-public ModelAndView nuevo() {
-    System.out.println(">>> GET /modelobarco/new"); 
-    ModelAndView mv = new ModelAndView("modelobarco-create"); 
-    mv.addObject("modelo", new ModeloBarcoDTO());           
-    return mv;
-}
-
-
-    // ---------------------------------------------------------
-    // CREAR (ACCION)
-    // POST a /modelobarco/create
-    // ---------------------------------------------------------//
-    @PostMapping("/create")
-    public RedirectView crear(@ModelAttribute("modelo") ModeloBarcoDTO dto, RedirectAttributes ra) {
-        log.info("POST /modelobarco/create dto={}", dto);
-        ModeloBarcoDTO creado = modeloBarcoService.crear(dto);
-        ra.addFlashAttribute("ok", "Modelo de barco creado");
-        return new RedirectView("/modelobarco/view/" + creado.getIdModelo());
+    // Crea persona y redirecciona a listado de personas
+    @PostMapping
+    public ModeloBarcoDTO crear(@RequestBody ModeloBarcoDTO modeloBarcoDTO){
+        return modeloBarcoService.crearModelo(modeloBarcoDTO);    
     }
-
-     // ---------------------------------------------------------
-    // EDITAR (FORMULARIO)
-    // http://localhost:8080/modelobarco/edit/1
-    // ---------------------------------------------------------
-    @GetMapping("/edit/{idModelo}")
-    public ModelAndView editar(@PathVariable Integer idModelo) {
-        log.info("GET /modelobarco/edit/{}", idModelo);
-        ModelAndView mv = new ModelAndView("modelobarco-edit");
-        mv.addObject("modelo", modeloBarcoService.recuperar(idModelo));
-        return mv;
+    
+    // Crea persona y redirecciona a listado de personas
+    @PutMapping
+    public ModeloBarcoDTO actualizar(@PathVariable Integer idModelo, @RequestBody ModeloBarcoDTO modeloBarcoDTO) {
+        return modeloBarcoService.actualizarModelo(idModelo, modeloBarcoDTO );
     }
+   
 
-    // ---------------------------------------------------------
-    // ACTUALIZAR (ACCION)
-    // POST a /modelobarco/update/1
-    // ---------------------------------------------------------
-    @PostMapping("/update/{idModelo}")
-    public RedirectView actualizar(@PathVariable Integer idModelo,
-                                   @ModelAttribute("modelo") ModeloBarcoDTO dto,
-                                   RedirectAttributes ra) {
-        log.info("POST /modelobarco/update/{} dto={}", idModelo, dto);
-        modeloBarcoService.actualizar(idModelo, dto);
-        ra.addFlashAttribute("ok", "Modelo de barco actualizado");
-        return new RedirectView("/modelobarco/view/" + idModelo);
-    }
-
-    // ---------------------------------------------------------
-    // ELIMINAR
-    // POST a /barco/delete/1
-    // --------------------------------------------------------- //
-    @PostMapping("/delete/{idModelo}")
-    public RedirectView eliminar(@PathVariable Integer idModelo, RedirectAttributes ra) {
-        log.info("POST /modelobarco/delete/{}", idModelo);
+    @DeleteMapping("{idModelo}")
+    public void eliminar(@PathVariable Integer idModelo) {
         modeloBarcoService.eliminar(idModelo);
-        ra.addFlashAttribute("ok", "Modelo de barco eliminado");
-        return new RedirectView("/modelobarco/list");
     }
 
     

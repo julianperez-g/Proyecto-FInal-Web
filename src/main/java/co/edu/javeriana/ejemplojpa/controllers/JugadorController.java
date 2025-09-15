@@ -5,13 +5,18 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.javeriana.ejemplojpa.dto.JugadorDTO;
 import co.edu.javeriana.ejemplojpa.services.JugadorService;
@@ -54,18 +59,16 @@ public class JugadorController {
     
     // Crea persona y redirecciona a listado de personas
     @PutMapping
-    public JugadorDTO actualizarJugador(@RequestBody JugadorDTO jugadorDTO, @PathVariable Integer idJugador) {
-        return JugadorService.actualizarJugador(jugadorDTO, idJugador);
+    public JugadorDTO actualizar(@RequestBody JugadorDTO jugadorDTO, @PathVariable Integer idJugador) {
+        return jugadorService.actualizarJugador(jugadorDTO, idJugador);
     }
 
 
 
-    @PostMapping("/delete/{idJugador}")
-    public RedirectView eliminar(@PathVariable Integer idJugador, RedirectAttributes ra) {
-        log.info("Post /jugador/delete/{}", idJugador);
-        jugadorService.eliminar(idJugador);
-        ra.addFlashAttribute("ok", "Jugador eliminado");
-        return new RedirectView("/jugador/list");
+    @DeleteMapping("{idJugador}")
+    public void eliminar(@PathVariable Integer idJugador) {
+       jugadorService.eliminarJugador(idJugador);
+    
     }
 
  
