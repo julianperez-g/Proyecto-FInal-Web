@@ -6,55 +6,45 @@
     import org.springframework.transaction.annotation.Transactional;
 
     import co.edu.javeriana.ejemplojpa.dto.JugadorDTO;
-    import co.edu.javeriana.ejemplojpa.mapper.JugadorMapper;
-    import co.edu.javeriana.ejemplojpa.model.Jugador;
+import co.edu.javeriana.ejemplojpa.mapper.JugadorMapper;
+import co.edu.javeriana.ejemplojpa.model.Jugador;
     import co.edu.javeriana.ejemplojpa.repository.JugadorRepository;
 
-    @Service
-    public class JugadorService {
+   @Service
+public class JugadorService {
 
-        private final JugadorRepository jugadorRepository;
+    private final JugadorRepository jugadorRepository;
+    private final JugadorMapper jugadorMapperManual;
 
-        
-        public JugadorService(JugadorRepository jugadorRepository) {
-            this.jugadorRepository = jugadorRepository;
-        }
-
-        // ======== READ: listar ========
-        @Transactional(readOnly = true)
-        public List<JugadorDTO> listarJugadores() {
-            return JugadorMapper.toDTOList(jugadorRepository.findAll());
-        }
-
-        // ======== READ: recuperar uno ========
-        @Transactional(readOnly = true)
-        public JugadorDTO recuperarJugador(Integer id) {
-            Jugador entity = jugadorRepository.findById(id).orElseThrow();
-            return JugadorMapper.toDTO(entity);
-        }
-
-         @Transactional
-        public JugadorDTO crearJugador(JugadorDTO jugadorDTO) {
-            // Conversión delegada al mapper
-            Jugador entity = JugadorMapper.toEntity(jugadorDTO);
-            entity.setIdJugador(null);
-            return JugadorMapper.toDTO(jugadorRepository.save(entity));
-    
-        }
-
-        // ======== UPDATE (encapsulado en el mapper) ========
-        @Transactional
-        public JugadorDTO actualizarJugador(JugadorDTO jugadorDTO, Integer idJugador) {
-            Jugador existente = jugadorRepository.findById(idJugador).orElseThrow();
-            // Encapsulamos la copia de campos en el mapper
-            JugadorMapper.updateEntityFromDTO(jugadorDTO, existente);
-            Jugador actualizado = jugadorRepository.save(existente);
-            return JugadorMapper.toDTO(actualizado);
-        }
-
-        // ======== DELETE ========
-        @Transactional
-        public void eliminarJugador(Integer id) {
-            jugadorRepository.deleteById(id);
-        }
+    public JugadorService(JugadorRepository repo, JugadorMapper mapper) {
+        this.jugadorRepository = repo;
+        this.jugadorMapperManual = mapper;
     }
+
+    public List<JugadorDTO> listarJugadores() {
+        return jugadorMapperManual.toDTO(jugadorRepository.findAll());
+    }
+
+    public JugadorDTO recuperarJugador(Integer id) {
+        return jugadorMapperManual.toDTO(jugadorRepository.findById(id).orElseThrow());
+    }
+
+    @Transactional
+    public JugadorDTO guardar(JugadorDTO dto) {
+        Jugador entity = jugadorMapperManual.toEntity(dto);
+        entity.setIdJugador(null);
+        return jugadorMapperManual.toDTO(jugadorRepository.save(entity));
+    }
+
+    @Transactional
+    public JugadorDTO actualizar(Integer id, JugadorDTO dto) {
+        Jugador existente = jugadorRepository.findById(id).orElseThrow();
+        jugadorMapperManual.updateEntityFromDTO(dto, existente);
+        return jugadorMapperManual.toDTO(jugadorRepository.save(existente));
+    }
+
+    @Transactional
+    public void eliminar(Integer id) {
+        jugadorRepository.deleteById(id);
+    }
+}

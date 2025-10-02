@@ -4,25 +4,10 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.*;
 
-import co.edu.javeriana.ejemplojpa.dto.JugadorDTO;
 import co.edu.javeriana.ejemplojpa.dto.ModeloBarcoDTO;
 import co.edu.javeriana.ejemplojpa.services.ModeloBarcoService;
 
@@ -31,42 +16,48 @@ import co.edu.javeriana.ejemplojpa.services.ModeloBarcoService;
 public class ModeloBarcoController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private final ModeloBarcoService modeloBarcoService;
 
-    @Autowired
-    private ModeloBarcoService modeloBarcoService;
+    public ModeloBarcoController(ModeloBarcoService modeloBarcoService) {
+        this.modeloBarcoService = modeloBarcoService;
+    }
 
-   // GET /modelos/list  -> lista de jugadores
+    // GET /modelos/list -> lista de modelos
     @GetMapping("/list")
-     public ResponseEntity<List<ModeloBarcoDTO>> listar() {
-        log.info("GET /modelobarco/list");
-        List<ModeloBarcoDTO> modelos = modeloBarcoService.listar();
-        return ResponseEntity.status(HttpStatus.OK).body(modelos);
+    public ResponseEntity<List<ModeloBarcoDTO>> listar() {
+        log.info("GET /modelos/list");
+        return ResponseEntity.ok(modeloBarcoService.listar());
     }
 
-    // GET /modelos/{idJugador}  -> detalle por id
+    // GET /modelos/{idModelo} -> detalle por id
     @GetMapping("{idModelo}")
-    public ModeloBarcoDTO recuperar(@PathVariable Integer idModelo) {
-        log.info("GET /{idModelo}", idModelo);
-        return modeloBarcoService.recuperar(idModelo);
+    public ResponseEntity<ModeloBarcoDTO> recuperar(@PathVariable Integer idModelo) {
+        log.info("GET /modelos/{}", idModelo);
+        return ResponseEntity.ok(modeloBarcoService.recuperar(idModelo));
     }
 
-    // Crea persona y redirecciona a listado de personas
+    // POST /modelos -> crear
     @PostMapping
-    public ModeloBarcoDTO crear(@RequestBody ModeloBarcoDTO modeloBarcoDTO){
-        return modeloBarcoService.crearModelo(modeloBarcoDTO);    
+    public ResponseEntity<ModeloBarcoDTO> crear(@RequestBody ModeloBarcoDTO modeloBarcoDTO) {
+        log.info("POST /modelos");
+        ModeloBarcoDTO creado = modeloBarcoService.crear(modeloBarcoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
-    
-    // Crea persona y redirecciona a listado de personas
-    @PutMapping
-    public ModeloBarcoDTO actualizar(@PathVariable Integer idModelo, @RequestBody ModeloBarcoDTO modeloBarcoDTO) {
-        return modeloBarcoService.actualizarModelo(idModelo, modeloBarcoDTO );
-    }
-   
 
+    // PUT /modelos/{idModelo} -> actualizar
+    @PutMapping("{idModelo}")
+    public ResponseEntity<ModeloBarcoDTO> actualizar(@PathVariable Integer idModelo,
+                                                     @RequestBody ModeloBarcoDTO modeloBarcoDTO) {
+        log.info("PUT /modelos/{}", idModelo);
+        ModeloBarcoDTO actualizado = modeloBarcoService.actualizar(idModelo, modeloBarcoDTO);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    // DELETE /modelos/{idModelo} -> eliminar
     @DeleteMapping("{idModelo}")
-    public void eliminar(@PathVariable Integer idModelo) {
+    public ResponseEntity<Void> eliminar(@PathVariable Integer idModelo) {
+        log.info("DELETE /modelos/{}", idModelo);
         modeloBarcoService.eliminar(idModelo);
+        return ResponseEntity.noContent().build();
     }
-
-    
 }

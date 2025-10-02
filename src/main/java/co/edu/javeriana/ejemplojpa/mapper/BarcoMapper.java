@@ -1,69 +1,61 @@
 package co.edu.javeriana.ejemplojpa.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
+
 
 import co.edu.javeriana.ejemplojpa.dto.BarcoDTO;
 import co.edu.javeriana.ejemplojpa.model.Barco;
+import co.edu.javeriana.ejemplojpa.model.Jugador;
+import co.edu.javeriana.ejemplojpa.model.ModeloBarco;
 
-public class BarcoMapper {
+@Mapper(componentModel = "spring")
+public interface BarcoMapper {
 
-    
-    // -------------------------
-    // Entity -> DTO
-    // -------------------------
-    public static BarcoDTO toDTO(Barco barco) {
-        if (barco == null) return null;
+    // =========================
+    // Entity -> DTO (aplanando)
+    // =========================
+    @Mapping(source = "jugador.idJugador", target = "jugadorId")
+    @Mapping(source = "jugador.nombre",    target = "jugadorNombre")
+    @Mapping(source = "modelo.idModelo",   target = "modeloId")
+    @Mapping(source = "modelo.nombre",     target = "modeloNombre")
+    BarcoDTO toDTO(Barco entity);
 
-        BarcoDTO dto = new BarcoDTO();
-        dto.setIdBarco(barco.getIdBarco());
-        dto.setVelX(barco.getVelX());
-        dto.setVelY(barco.getVelY());
-        dto.setPosX(barco.getPosX());
-        dto.setPosY(barco.getPosY());
+    List<BarcoDTO> toDTO(List<Barco> entities);
 
-        if (barco.getJugador() != null) {
-            dto.setJugadorId(barco.getJugador().getIdJugador());
-            dto.setJugadorNombre(barco.getJugador().getNombre()); 
-        }
-        if (barco.getModelo() != null) {
-            dto.setModeloId(barco.getModelo().getIdModelo());
-            dto.setModeloNombre(barco.getModelo().getNombre());   
-        }
-        return dto;
+    // =========================
+    // DTO -> Entity (reconstruye relaciones desde IDs)
+    // =========================
+    @Mapping(target = "jugador", source = "jugadorId")
+    @Mapping(target = "modelo",  source = "modeloId")
+    Barco toEntity(BarcoDTO dto);
+
+    List<Barco> toEntity(List<BarcoDTO> dtos);
+
+    // ===== (Opcional) Update in-place: copia solo propiedades no nulas del DTO al Entity =====
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "jugador", source = "jugadorId")
+    @Mapping(target = "modelo",  source = "modeloId")
+    void updateEntityFromDTO(BarcoDTO source, @MappingTarget Barco target);
+
+    // ===== Helpers: mapear id -> entidad "stub" (solo id) =====
+    default Jugador mapJugador(Integer id) {
+        if (id == null) return null;
+        Jugador j = new Jugador();
+        j.setIdJugador(id);
+        return j;
     }
 
-   
-    // -------------------------
-    // DTO -> Entity
-    // -------------------------
-    public static Barco toEntity(BarcoDTO dto) {
-        if (dto == null) return null;
-        Barco barco = new Barco();
-        barco.setIdBarco(dto.getIdBarco());
-        barco.setVelX(dto.getVelX());
-        barco.setVelY(dto.getVelY());
-        barco.setPosX(dto.getPosX());
-        barco.setPosY(dto.getPosY());
-    
-        return barco;
-    }
-
-    public static List<BarcoDTO> toDTOList(List<Barco> entities) {
-        List<BarcoDTO> dtos = new ArrayList<>();
-        if (entities == null) return dtos;
-        for (Barco entity : entities) {
-            dtos.add(toDTO(entity));
-        }
-        return dtos;
-    }
-
-    public static List<Barco> toEntityList(List<BarcoDTO> dtos) {
-        List<Barco> entities = new ArrayList<>();
-        if (dtos == null) return entities;
-        for (BarcoDTO dto : dtos) {
-            entities.add(toEntity(dto));
-        }
-        return entities;
+    default ModeloBarco mapModelo(Integer id) {
+        if (id == null) return null;
+        ModeloBarco m = new ModeloBarco();
+        m.setIdModelo(id);
+        return m;
     }
 }

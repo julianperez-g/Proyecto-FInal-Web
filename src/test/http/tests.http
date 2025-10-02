@@ -1,0 +1,12 @@
+### Crear modelo OK
+POST http://localhost:8080/modelos
+Content-Type: application/json
+
+{
+  "nombre": "Falcon",
+  "color": "Azul",
+  "capacidad": 10
+}
+
+### Listar modelos
+GET http://localhost:8080/modelos/list

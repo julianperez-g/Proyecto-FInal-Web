@@ -43,6 +43,8 @@ public class JugadorController {
         return ResponseEntity.status(HttpStatus.OK).body(jugadores);
     }
 
+    
+
     // GET /jugador/{idJugador}  -> detalle por id
     @GetMapping("{idJugador}")
     public JugadorDTO recuperarJugador(@PathVariable Integer idJugador) {

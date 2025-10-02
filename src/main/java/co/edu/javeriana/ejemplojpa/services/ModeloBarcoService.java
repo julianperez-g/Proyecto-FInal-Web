@@ -2,7 +2,6 @@ package co.edu.javeriana.ejemplojpa.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,42 +13,41 @@ import co.edu.javeriana.ejemplojpa.repository.ModeloBarcoRepository;
 @Service
 public class ModeloBarcoService {
 
-    @Autowired
-    private ModeloBarcoRepository modeloBarcoRepository;
+    private final ModeloBarcoRepository modeloBarcoRepository;
+    private final ModeloBarcoMapper modeloBarcoMapper;
 
-    // LISTAR
+    public ModeloBarcoService(ModeloBarcoRepository modeloBarcoRepository,
+                              ModeloBarcoMapper modeloBarcoMapper) {
+        this.modeloBarcoRepository = modeloBarcoRepository;
+        this.modeloBarcoMapper = modeloBarcoMapper;
+    }
+
     public List<ModeloBarcoDTO> listar() {
-        return ModeloBarcoMapper.toDTOList(modeloBarcoRepository.findAll());
+        List<ModeloBarco> entities = modeloBarcoRepository.findAll();
+        return modeloBarcoMapper.toDTO(entities); // <-- nombre correcto
     }
 
-    // RECUPERAR
-    public ModeloBarcoDTO recuperar(int idModelo) {
-        ModeloBarco modelo = modeloBarcoRepository.findById(idModelo).orElseThrow();
-        return ModeloBarcoMapper.toDTO(modelo);
+    public ModeloBarcoDTO recuperar(Integer id) {
+        ModeloBarco entity = modeloBarcoRepository.findById(id).orElseThrow();
+        return modeloBarcoMapper.toDTO(entity);
     }
 
-    // CREAR
     @Transactional
-    public ModeloBarcoDTO crearModelo(ModeloBarcoDTO modeloBarcoDTO) {
-        ModeloBarco m = ModeloBarcoMapper.toEntity(modeloBarcoDTO);
-        m.setIdModelo(null); // por si llega algo
-        m = modeloBarcoRepository.save(m);
-        return ModeloBarcoMapper.toDTO(m);
+    public ModeloBarcoDTO crear(ModeloBarcoDTO dto) {
+        ModeloBarco entity = modeloBarcoMapper.toEntity(dto);
+        entity.setIdModelo(null);
+        return modeloBarcoMapper.toDTO(modeloBarcoRepository.save(entity));
     }
 
-    // ACTUALIZAR
     @Transactional
-    public ModeloBarcoDTO actualizarModelo(Integer idModelo, ModeloBarcoDTO modeloBarcoDTO) {
-        ModeloBarco m = modeloBarcoRepository.findById(idModelo).orElseThrow();
-        m.setNombre(modeloBarcoDTO.getNombre());
-        m.setColor(modeloBarcoDTO.getColor());
-        m = modeloBarcoRepository.save(m);
-        return ModeloBarcoMapper.toDTO(m);
+    public ModeloBarcoDTO actualizar(Integer id, ModeloBarcoDTO dto) {
+        ModeloBarco existente = modeloBarcoRepository.findById(id).orElseThrow();
+        modeloBarcoMapper.updateEntityFromDTO(dto, existente);
+        return modeloBarcoMapper.toDTO(modeloBarcoRepository.save(existente));
     }
 
-    // ELIMINAR
     @Transactional
-    public void eliminar(Integer idModelo) {
-        modeloBarcoRepository.deleteById(idModelo);
+    public void eliminar(Integer id) {
+        modeloBarcoRepository.deleteById(id);
     }
 }

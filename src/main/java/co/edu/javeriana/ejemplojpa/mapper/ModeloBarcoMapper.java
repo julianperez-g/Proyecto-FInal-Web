@@ -1,58 +1,30 @@
 package co.edu.javeriana.ejemplojpa.mapper;
 
-import java.util.ArrayList;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
+
 import java.util.List;
 
 import co.edu.javeriana.ejemplojpa.dto.ModeloBarcoDTO;
 import co.edu.javeriana.ejemplojpa.model.ModeloBarco;
 
-public class ModeloBarcoMapper {
+@Mapper(
+    componentModel = "spring",
+    unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
+public interface ModeloBarcoMapper {
 
-    // -------------------------
-    // Entity -> DTO
-    // -------------------------
-    public static ModeloBarcoDTO toDTO(ModeloBarco entity) {
-        if (entity == null) return null;
-        ModeloBarcoDTO dto = new ModeloBarcoDTO();
-        dto.setIdModelo(entity.getIdModelo());
-        dto.setNombre(entity.getNombre());
-        dto.setColor(entity.getColor());
-        return dto;
-    }
+    ModeloBarcoDTO toDTO(ModeloBarco entity);
 
-    // -------------------------
-    // DTO -> Entity
-    // -------------------------
-    public static ModeloBarco toEntity(ModeloBarcoDTO dto) {
-        if (dto == null) return null;
-        ModeloBarco entity = new ModeloBarco();
-        entity.setIdModelo(dto.getIdModelo());
-        entity.setNombre(dto.getNombre());
-        entity.setColor(dto.getColor());
-        return entity;
-    }
+    List<ModeloBarcoDTO> toDTO(List<ModeloBarco> entities);
 
-    // -------------------------
-    // List<Entity> -> List<DTO>
-    // -------------------------
-    public static List<ModeloBarcoDTO> toDTOList(List<ModeloBarco> entities) {
-        List<ModeloBarcoDTO> dtos = new ArrayList<>();
-        if (entities == null) return dtos;
-        for (ModeloBarco entity : entities) {
-            dtos.add(toDTO(entity));
-        }
-        return dtos;
-    }
+    ModeloBarco toEntity(ModeloBarcoDTO dto);
 
-    // -------------------------
-    // List<DTO> -> List<Entity>
-    // -------------------------
-    public static List<ModeloBarco> toEntityList(List<ModeloBarcoDTO> dtos) {
-        List<ModeloBarco> entities = new ArrayList<>();
-        if (dtos == null) return entities;
-        for (ModeloBarcoDTO dto : dtos) {
-            entities.add(toEntity(dto));
-        }
-        return entities;
-    }
+    List<ModeloBarco> toEntity(List<ModeloBarcoDTO> dtos);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDTO(ModeloBarcoDTO source, @MappingTarget ModeloBarco target);
 }
